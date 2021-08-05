@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/auth/getUserInfo",
+      "handler": "Auth.getUserInfo",
+      "config": {
+        "policies": [],
+        "prefix": ""
+      }
+    }
+  ]
+}
