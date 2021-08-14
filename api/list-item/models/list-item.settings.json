@@ -27,7 +27,7 @@
     "review": {
       "type": "text"
     },
-    "ownerId": {
+    "owner": {
       "plugin": "users-permissions",
       "model": "user"
     }
