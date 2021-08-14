@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "list_items",
+  "info": {
+    "name": "ListItem",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "movieId": {
+      "type": "biginteger"
+    },
+    "startDate": {
+      "type": "datetime"
+    },
+    "finishDate": {
+      "type": "datetime"
+    },
+    "rating": {
+      "type": "integer"
+    },
+    "review": {
+      "type": "text"
+    },
+    "ownerId": {
+      "plugin": "users-permissions",
+      "model": "user"
+    }
+  }
+}
