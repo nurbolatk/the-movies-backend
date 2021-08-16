@@ -1,9 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "list_items",
+  "collectionName": "to_watch",
   "info": {
-    "name": "ListItem",
-    "description": ""
+    "name": "ToWatch"
   },
   "options": {
     "increments": true,
@@ -14,18 +13,6 @@
   "attributes": {
     "movieId": {
       "type": "biginteger"
-    },
-    "startDate": {
-      "type": "datetime"
-    },
-    "finishDate": {
-      "type": "datetime"
-    },
-    "rating": {
-      "type": "integer"
-    },
-    "review": {
-      "type": "text"
     },
     "owner": {
       "plugin": "users-permissions",

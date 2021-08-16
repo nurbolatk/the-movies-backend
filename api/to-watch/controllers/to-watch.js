@@ -15,11 +15,15 @@ module.exports = {
    */
 
   async find(ctx) {
-    const listItems = await strapi.services['list-item'].find({
+    const listItems = await strapi.services['to-watch'].find({
       'owner.id': ctx.state.user.id,
     });
 
-    return sanitizeEntity(listItems, { model: strapi.models['list-item'] });
+    // strange bug, movieId is stored as string even if type is int
+    return sanitizeEntity(listItems.map(item => {
+      item.movieId = parseInt(item.movieId)
+      return item
+    }), { model: strapi.models['to-watch'] });
   },
 
   /**
@@ -33,12 +37,12 @@ module.exports = {
     if (ctx.is('multipart')) {
       const { data, files } = parseMultipartData(ctx);
       data.owner = ctx.state.user.id;
-      entity = await strapi.services['list-item'].create(data, { files });
+      entity = await strapi.services['to-watch'].create(data, { files });
     } else {
       ctx.request.body.owner = ctx.state.user.id;
-      entity = await strapi.services['list-item'].create(ctx.request.body);
+      entity = await strapi.services['to-watch'].create(ctx.request.body);
     }
-    return sanitizeEntity(entity, { model: strapi.models['list-item'] });
+    return sanitizeEntity(entity, { model: strapi.models['to-watch'] });
   },
 
   /**
@@ -52,7 +56,7 @@ module.exports = {
 
     let entity;
 
-    const [listItem] = await strapi.services['list-item'].find({
+    const [listItem] = await strapi.services['to-watch'].find({
       id: ctx.params.id,
       'owner.id': ctx.state.user.id,
     });
@@ -63,13 +67,13 @@ module.exports = {
 
     if (ctx.is('multipart')) {
       const { data, files } = parseMultipartData(ctx);
-      entity = await strapi.services['list-item'].update({ id }, data, {
+      entity = await strapi.services['to-watch'].update({ id }, data, {
         files,
       });
     } else {
-      entity = await strapi.services['list-item'].update({ id }, ctx.request.body);
+      entity = await strapi.services['to-watch'].update({ id }, ctx.request.body);
     }
 
-    return sanitizeEntity(entity, { model: strapi.models['list-item'] });
+    return sanitizeEntity(entity, { model: strapi.models['to-watch'] });
   },
 };
