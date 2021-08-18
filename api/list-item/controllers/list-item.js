@@ -15,15 +15,14 @@ module.exports = {
    */
 
   async find(ctx) {
-    const listItems = await strapi.services['to-watch'].find({
+    const listItems = await strapi.services['list-item'].find({
       'owner.id': ctx.state.user.id,
     });
-
     // strange bug, movieId is stored as string even if type is int
     return sanitizeEntity(listItems.map(item => {
       item.movieId = parseInt(item.movieId)
       return item
-    }), { model: strapi.models['to-watch'] });
+    }), { model: strapi.models['list-item'] });
   },
 
   /**
@@ -36,13 +35,15 @@ module.exports = {
     let entity;
     if (ctx.is('multipart')) {
       const { data, files } = parseMultipartData(ctx);
+      
       data.owner = ctx.state.user.id;
-      entity = await strapi.services['to-watch'].create(data, { files });
+      entity = await strapi.services['list-item'].create(data, { files });
     } else {
       ctx.request.body.owner = ctx.state.user.id;
-      entity = await strapi.services['to-watch'].create(ctx.request.body);
+      entity = await strapi.services['list-item'].create(ctx.request.body);
+      entity.movieId = parseInt(entity.movieId)
     }
-    return sanitizeEntity(entity, { model: strapi.models['to-watch'] });
+    return sanitizeEntity(entity, { model: strapi.models['list-item'] });
   },
 
   /**
@@ -56,10 +57,14 @@ module.exports = {
 
     let entity;
 
-    const [listItem] = await strapi.services['to-watch'].find({
+    const [listItem] = await strapi.services['list-item'].find({
       id: ctx.params.id,
-      'owner.id': ctx.state.user.id,
+      // 'owner.id': ctx.state.user.id,
     });
+
+    console.log(listItem)
+    console.log("\n\n\n\n\n")
+    console.log(ctx)
 
     if (!listItem) {
       return ctx.unauthorized(`You can't update this entry`);
@@ -67,13 +72,13 @@ module.exports = {
 
     if (ctx.is('multipart')) {
       const { data, files } = parseMultipartData(ctx);
-      entity = await strapi.services['to-watch'].update({ id }, data, {
+      entity = await strapi.services['list-item'].update({ id }, data, {
         files,
       });
     } else {
-      entity = await strapi.services['to-watch'].update({ id }, ctx.request.body);
+      entity = await strapi.services['list-item'].update({ id }, ctx.request.body);
     }
 
-    return sanitizeEntity(entity, { model: strapi.models['to-watch'] });
+    return sanitizeEntity(entity, { model: strapi.models['list-item'] });
   },
 };

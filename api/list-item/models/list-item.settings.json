@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "list_items",
+  "info": {
+    "name": "ListItem",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "review": {
+      "type": "text"
+    },
+    "rating": {
+      "type": "integer",
+      "default": -1,
+      "max": 5,
+      "min": -1
+    },
+    "watched": {
+      "type": "boolean",
+      "default": false
+    },
+    "owner": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "movieId": {
+      "type": "biginteger"
+    }
+  }
+}
